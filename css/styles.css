@@ -25,12 +25,19 @@ body {
   align-items: flex-end;
   justify-content: center;
   min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  width: 100vw;
   background-color: #050811;
   overflow: hidden;
+  position: fixed;
+  inset: 0;
   perspective: 1000px;
   font-family: 'Quicksand', sans-serif;
   background-image: radial-gradient(circle at bottom, #1a2e1a 0%, #050811 60%, #000000 100%);
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* --- ESTADO NO INICIADO (ESPERANDO INTERACCIÓN) --- */
@@ -47,11 +54,12 @@ body.not-loaded .letter-btn {
   inset: 0;
   background: rgba(5, 8, 17, 0.88);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
 }
 
@@ -66,8 +74,8 @@ body.not-loaded .letter-btn {
   background: radial-gradient(circle at 50% 0%, #1a2536 0%, #0d1420 70%, #06090e 100%);
   border: 1.5px solid rgba(255, 215, 0, 0.5);
   border-radius: 24px;
-  padding: 32px 28px 28px;
-  max-width: 380px;
+  padding: clamp(24px, 5vw, 32px) clamp(18px, 4vw, 28px);
+  max-width: min(380px, 90vw);
   width: 100%;
   box-shadow: 0 0 45px rgba(255, 215, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.8);
   animation: introPop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -86,8 +94,8 @@ body.not-loaded .letter-btn {
 }
 
 .intro-snoopy-img {
-  width: 130px;
-  height: 130px;
+  width: clamp(105px, 28vw, 130px);
+  height: clamp(105px, 28vw, 130px);
   object-fit: cover;
   border-radius: 50%;
   border: 2.5px solid rgba(255, 215, 0, 0.75);
@@ -102,7 +110,7 @@ body.not-loaded .letter-btn {
 
 .intro-card h2 {
   font-family: 'Caveat', cursive;
-  font-size: 2.5rem;
+  font-size: clamp(1.9rem, 6.5vw, 2.5rem);
   font-weight: 700;
   color: #ffe066;
   margin-bottom: 8px;
@@ -111,9 +119,9 @@ body.not-loaded .letter-btn {
 
 .intro-card p {
   color: #f7f1d0;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 3vw, 0.95rem);
   font-weight: 300;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   letter-spacing: 0.5px;
 }
 
@@ -121,10 +129,10 @@ body.not-loaded .letter-btn {
   background: linear-gradient(135deg, #ffd200 0%, #f7971e 100%);
   border: none;
   color: #1a1200;
-  width: 58px;
-  height: 58px;
+  width: clamp(52px, 14vw, 58px);
+  height: clamp(52px, 14vw, 58px);
   border-radius: 50%;
-  font-size: 1.6rem;
+  font-size: clamp(1.4rem, 4.5vw, 1.6rem);
   font-weight: bold;
   cursor: pointer;
   box-shadow: 0 0 25px rgba(255, 210, 0, 0.65);
@@ -133,7 +141,7 @@ body.not-loaded .letter-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .intro-arrow {
@@ -161,6 +169,7 @@ body.not-loaded .letter-btn {
     transform: scale(1.08); 
   }
 }
+
 .night {
   position: fixed;
   left: 50%;
@@ -189,41 +198,42 @@ canvas#star-canvas {
 /* --- TÍTULO SUPERIOR Y MENSAJE ROMÁNTICO --- */
 .title-wrapper {
   position: absolute;
-  top: 5%;
+  top: max(3.5%, env(safe-area-inset-top, 15px));
   width: 100%;
   text-align: center;
   z-index: 100;
   opacity: 0;
   animation: fadeInTitle 2.5s ease 2s forwards, pulseTitle 4s ease-in-out infinite 4.5s;
   pointer-events: none;
-  padding: 0 15px;
+  padding: 0 max(15px, env(safe-area-inset-left));
 }
 
 .title-wrapper h1 {
   font-family: 'Caveat', cursive;
-  font-size: clamp(3.2rem, 7.5vw, 5.2rem);
+  font-size: clamp(2.4rem, 7.5vw, 5rem);
   font-weight: 700;
   color: #ffe066;
   text-shadow: 0 0 18px rgba(255, 215, 0, 0.85), 0 0 35px rgba(247, 151, 30, 0.65);
   margin-bottom: 2px;
+  line-height: 1.1;
 }
 
 .title-wrapper p {
   color: #fff9db;
-  font-size: clamp(0.95rem, 2.5vw, 1.25rem);
-  letter-spacing: 2px;
-  font-weight: 300;
+  font-size: clamp(0.85rem, 2.6vw, 1.25rem);
+  letter-spacing: 1.5px;
+  font-weight: 400;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
 }
 
 .title-wrapper .sub-romantic {
   display: block;
-  margin-top: 6px;
-  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  margin-top: 4px;
+  font-size: clamp(0.75rem, 2.2vw, 0.95rem);
   color: #ffd875;
   font-style: italic;
-  opacity: 0.85;
-  letter-spacing: 1.5px;
+  opacity: 0.9;
+  letter-spacing: 1px;
 }
 
 @keyframes pulseTitle {
@@ -251,17 +261,18 @@ canvas#star-canvas {
 /* --- BOTÓN DE AUDIO / MÚSICA --- */
 .mute-btn {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
   z-index: 120;
-  background: rgba(10, 15, 26, 0.45);
+  background: rgba(10, 15, 26, 0.55);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 215, 0, 0.35);
   color: #ffe066;
   border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  font-size: 1.1rem;
+  width: clamp(38px, 10vw, 44px);
+  height: clamp(38px, 10vw, 44px);
+  font-size: clamp(1rem, 3.5vw, 1.2rem);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -278,16 +289,19 @@ canvas#star-canvas {
 /* --- BOTÓN FLOTANTE DE LA CARTA (SOLO ÍCONO - APARECE TRAS FLORECER) --- */
 .letter-btn {
   position: fixed;
-  bottom: 22px;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%) scale(0.6);
   z-index: 110;
-  background: rgba(10, 15, 26, 0.65);
+  background: rgba(10, 15, 26, 0.68);
   backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(255, 215, 0, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 215, 0, 0.55);
   color: #ffe066;
-  width: 50px;
-  height: 50px;
+  width: clamp(44px, 12vw, 50px);
+  height: clamp(44px, 12vw, 50px);
   border-radius: 50%;
-  font-size: 1.5rem;
+  font-size: clamp(1.3rem, 4vw, 1.5rem);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -296,25 +310,24 @@ canvas#star-canvas {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.6);
   animation: fadeInLetterBtn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 6s forwards, pulseBtn 3s infinite ease-in-out 7.2s;
 }
 
 .letter-btn:hover {
   background: rgba(255, 215, 0, 0.25);
-  transform: scale(1.15) rotate(6deg) !important;
+  transform: translateX(-50%) scale(1.15) rotate(6deg) !important;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.65);
 }
 
 @keyframes fadeInLetterBtn {
   0% {
     opacity: 0;
-    transform: scale(0.4) translateY(20px);
+    transform: translateX(-50%) scale(0.4) translateY(20px);
     pointer-events: none;
   }
   100% {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateX(-50%) scale(1) translateY(0);
     pointer-events: auto;
   }
 }
@@ -322,11 +335,11 @@ canvas#star-canvas {
 @keyframes pulseBtn {
   0%, 100% {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
-    transform: scale(1);
+    transform: translateX(-50%) scale(1);
   }
   50% {
     box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
-    transform: scale(1.08);
+    transform: translateX(-50%) scale(1.08);
   }
 }
 
@@ -336,6 +349,7 @@ canvas#star-canvas {
   inset: 0;
   background: rgba(4, 7, 14, 0.78);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   z-index: 200;
   display: flex;
   align-items: center;
@@ -343,7 +357,7 @@ canvas#star-canvas {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  padding: 16px;
+  padding: clamp(12px, 3vw, 20px);
 }
 
 .letter-modal.active {
@@ -356,10 +370,10 @@ canvas#star-canvas {
   background: radial-gradient(circle at 50% 0%, #1e2838 0%, #0d1420 55%, #070a10 100%);
   border: 1.5px solid rgba(255, 215, 0, 0.55);
   border-radius: 22px;
-  padding: 30px 24px 24px;
-  max-width: 440px;
+  padding: clamp(22px, 5vw, 30px) clamp(16px, 4.5vw, 26px) clamp(20px, 4vw, 24px);
+  max-width: min(440px, 94vw);
   width: 100%;
-  max-height: 88vh;
+  max-height: min(88vh, 88dvh);
   overflow-y: auto;
   text-align: center;
   color: #fff9db;
@@ -374,7 +388,7 @@ canvas#star-canvas {
 }
 
 .letter-card::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 .letter-card::-webkit-scrollbar-thumb {
@@ -387,7 +401,7 @@ canvas#star-canvas {
 }
 
 .letter-ornament {
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
   letter-spacing: 4px;
   color: #ffd875;
   opacity: 0.85;
@@ -396,21 +410,21 @@ canvas#star-canvas {
 
 .letter-title {
   font-family: 'Caveat', cursive;
-  font-size: clamp(2.6rem, 6.5vw, 3.4rem);
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
   font-weight: 700;
   color: #ffe066;
-  margin: 6px 0 2px;
+  margin: 4px 0 2px;
   text-shadow: 0 0 16px rgba(255, 215, 0, 0.8), 0 0 30px rgba(247, 151, 30, 0.5);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .letter-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0 16px;
+  margin: 8px 0 14px;
   color: #ffd54f;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .letter-divider::before,
@@ -423,19 +437,19 @@ canvas#star-canvas {
 }
 
 .letter-body {
-  font-size: 0.95rem;
-  line-height: 1.75;
-  font-weight: 300;
+  font-size: clamp(0.88rem, 2.8vw, 0.96rem);
+  line-height: 1.7;
+  font-weight: 400;
   color: #f7f1d0;
   text-align: left;
 }
 
 .letter-body p {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .letter-intro {
-  font-size: 1rem;
+  font-size: clamp(0.92rem, 3vw, 1rem);
   font-style: italic;
   color: #ffe57f;
   text-align: center;
@@ -444,30 +458,27 @@ canvas#star-canvas {
 .letter-highlight {
   background: rgba(255, 215, 0, 0.08);
   border-left: 3px solid #ffd200;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 0 10px 10px 0;
   font-style: italic;
   font-family: 'Playfair Display', serif;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 2.9vw, 1rem);
   color: #fff4a3;
-  margin: 16px 0;
+  margin: 14px 0;
   box-shadow: inset 0 0 12px rgba(255, 215, 0, 0.05);
 }
 
 .letter-signature {
   text-align: right;
-  font-style: italic;
-  font-size: 0.95rem;
-  color: #ffd875;
-  margin-top: 18px !important;
-  line-height: 1.5;
+  margin-top: 14px !important;
+  line-height: 1.4;
 }
 
 .letter-signature strong {
   display: block;
-  margin-top: 4px;
-  font-size: 1.1rem;
-  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.1rem, 3.8vw, 1.25rem);
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
   color: #ffe066;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
 }
@@ -475,18 +486,18 @@ canvas#star-canvas {
 /* Botón de cierre elegante (X) en la esquina superior */
 .close-letter-btn {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 12px;
+  right: 12px;
   background: rgba(255, 215, 0, 0.12);
   border: 1px solid rgba(255, 215, 0, 0.4);
   color: #ffe066;
-  width: 32px;
-  height: 32px;
+  width: clamp(28px, 8vw, 32px);
+  height: clamp(28px, 8vw, 32px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -523,12 +534,14 @@ canvas#star-canvas {
 }
 
 /* ====================================================
-   ESTRUCTURA DEL RAMO DE FLORES
+   ESTRUCTURA DEL RAMO DE FLORES (RESPONSIVE)
    ==================================================== */
 .flowers {
   position: relative;
-  transform: scale(0.94);
-  margin-bottom: 3vmin;
+  transform: scale(clamp(0.65, 0.8vw + 0.55, 0.95));
+  margin-bottom: max(2vmin, env(safe-area-inset-bottom, 10px));
+  transform-origin: bottom center;
+  transition: transform 0.4s ease;
 }
 
 .flowers::before {
@@ -988,5 +1001,154 @@ canvas#star-canvas {
     transform: translateY(-30vmin);
     opacity: 0;
     filter: blur(1vmin);
+  }
+}
+
+/* ====================================================
+   ADAPTABILIDAD RESPONSIVA PARA TODOS LOS DISPOSITIVOS
+   ==================================================== */
+
+/* --- Celulares y Pantallas Pequeñas (≤ 480px) --- */
+@media (max-width: 480px) {
+  .flowers {
+    transform: scale(0.72);
+    margin-bottom: max(1.5vmin, env(safe-area-inset-bottom, 8px));
+  }
+
+  .title-wrapper {
+    top: max(2.5%, env(safe-area-inset-top, 10px));
+  }
+
+  .title-wrapper h1 {
+    font-size: clamp(2.3rem, 10vw, 3.4rem);
+  }
+
+  .title-wrapper p {
+    font-size: clamp(0.85rem, 3.8vw, 1.05rem);
+    letter-spacing: 1px;
+  }
+
+  .intro-card {
+    padding: 24px 18px 20px;
+  }
+
+  .intro-snoopy-img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .letter-card {
+    padding: 22px 16px 18px;
+    border-radius: 18px;
+  }
+
+  .letter-title {
+    font-size: 2.3rem;
+  }
+
+  .letter-body {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+/* --- Pantallas de Altura Reducida (≤ 680px) --- */
+@media (max-height: 680px) {
+  .flowers {
+    transform: scale(0.62);
+    margin-bottom: 0;
+  }
+
+  .title-wrapper {
+    top: 2%;
+  }
+
+  .title-wrapper h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin-bottom: 0;
+  }
+
+  .title-wrapper p {
+    font-size: 0.85rem;
+  }
+
+  .title-wrapper .sub-romantic {
+    margin-top: 2px;
+    font-size: 0.75rem;
+  }
+
+  .intro-card {
+    padding: 18px 16px;
+  }
+
+  .intro-snoopy-img {
+    width: 95px;
+    height: 95px;
+  }
+
+  .letter-card {
+    max-height: 92vh;
+    max-height: 92dvh;
+    padding: 18px 16px;
+  }
+}
+
+/* --- Modo Horizontal en Celulares (Landscape ≤ 520px de alto) --- */
+@media (max-height: 520px) and (orientation: landscape) {
+  .flowers {
+    transform: scale(0.48);
+    margin-bottom: -4vmin;
+  }
+
+  .title-wrapper {
+    top: 1.5%;
+  }
+
+  .title-wrapper h1 {
+    font-size: 2rem;
+  }
+
+  .title-wrapper p,
+  .title-wrapper .sub-romantic {
+    display: none; /* Simplificar para dar espacio limpio al ramo */
+  }
+
+  .intro-card {
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 480px;
+  }
+
+  .intro-snoopy-img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .letter-card {
+    max-height: 94vh;
+    padding: 16px 20px;
+  }
+
+  .letter-body p {
+    margin-bottom: 8px;
+  }
+}
+
+/* --- Pantallas Grandes y Monitores de Alta Resolución (≥ 1400px) --- */
+@media (min-width: 1400px) {
+  .flowers {
+    transform: scale(1.05);
+    margin-bottom: 3.5vmin;
+  }
+
+  .title-wrapper h1 {
+    font-size: 5rem;
+  }
+
+  .letter-card {
+    max-width: 480px;
+    padding: 34px 30px;
   }
 }
