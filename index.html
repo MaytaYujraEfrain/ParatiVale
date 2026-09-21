@@ -42,11 +42,12 @@
     <span id="muteIcon">🔊</span>
   </button>
 
-  <!-- Audio de Fondo con Autoplay -->
-  <audio id="bgMusic" src="audio/audio2.mpeg" autoplay playsinline loop preload="auto">
+  <!-- Audio de Fondo (Compatible con Android e iOS) -->
+  <audio id="bgMusic" preload="auto" playsinline loop>
+    <source src="audio/audio2.mpeg" type="audio/mpeg">
+    <source src="audio/audio2.mpeg" type="audio/mp3">
     <source src="audio/sonido.mpeg" type="audio/mpeg">
     <source src="audio/musica.mp3" type="audio/mpeg">
-    <source src="audio/cancion.mp3" type="audio/mpeg">
   </audio>
 
   <!-- Botón de apertura de la carta (solo ícono) -->
