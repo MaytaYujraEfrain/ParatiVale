@@ -1,0 +1,992 @@
+/* ====================================================
+   FLORES AMARILLAS - ESTILOS PRINCIPALES
+   ==================================================== */
+
+/* --- RESET & VARIABLES GLOBALES --- */
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --dark-color: #000;
+  --yellow-light: #fff275;
+  --yellow-main: #ffd200;
+  --yellow-deep: #f7971e;
+  --stem-color: #14442a;
+  --grass-color: #103822;
+}
+
+body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #050811;
+  overflow: hidden;
+  perspective: 1000px;
+  font-family: 'Quicksand', sans-serif;
+  background-image: radial-gradient(circle at bottom, #1a2e1a 0%, #050811 60%, #000000 100%);
+  user-select: none;
+}
+
+/* --- ESTADO NO INICIADO (ESPERANDO INTERACCIÓN) --- */
+body.not-loaded .flowers,
+body.not-loaded .title-wrapper,
+body.not-loaded .butterflies,
+body.not-loaded .letter-btn {
+  display: none !important;
+}
+
+/* --- PANTALLA DE BIENVENIDA (INTRO SCREEN) --- */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 17, 0.88);
+  backdrop-filter: blur(12px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+.intro-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-card {
+  text-align: center;
+  background: radial-gradient(circle at 50% 0%, #1a2536 0%, #0d1420 70%, #06090e 100%);
+  border: 1.5px solid rgba(255, 215, 0, 0.5);
+  border-radius: 24px;
+  padding: 32px 28px 28px;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 0 45px rgba(255, 215, 0, 0.35), 0 20px 40px rgba(0, 0, 0, 0.8);
+  animation: introPop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes introPop {
+  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Snoopy en Pantalla de Inicio */
+.intro-img-wrapper {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.intro-snoopy-img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2.5px solid rgba(255, 215, 0, 0.75);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+  animation: snoopyFloat 3s infinite ease-in-out;
+}
+
+@keyframes snoopyFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.04); }
+}
+
+.intro-card h2 {
+  font-family: 'Caveat', cursive;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffe066;
+  margin-bottom: 8px;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+.intro-card p {
+  color: #f7f1d0;
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+}
+
+.intro-btn {
+  background: linear-gradient(135deg, #ffd200 0%, #f7971e 100%);
+  border: none;
+  color: #1a1200;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(255, 210, 0, 0.65);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: introBtnPulse 2s infinite ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.intro-arrow {
+  display: inline-block;
+  line-height: 1;
+  transition: transform 0.3s ease;
+}
+
+.intro-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 35px rgba(255, 210, 0, 0.95);
+}
+
+.intro-btn:hover .intro-arrow {
+  transform: translateX(4px);
+}
+
+@keyframes introBtnPulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(255, 210, 0, 0.5); 
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 35px rgba(255, 210, 0, 0.9); 
+    transform: scale(1.08); 
+  }
+}
+.night {
+  position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  filter: blur(0.1vmin);
+  background-image: 
+    radial-gradient(ellipse at top, transparent 0%, var(--dark-color)), 
+    radial-gradient(ellipse at bottom, var(--dark-color), rgba(145, 233, 255, 0.1)), 
+    repeating-linear-gradient(220deg, rgb(0, 0, 0) 0px, rgb(0, 0, 0) 19px, transparent 19px, transparent 22px), 
+    radial-gradient(circle at center, #1b263b 0%, #000814 100%);
+}
+
+canvas#star-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- TÍTULO SUPERIOR Y MENSAJE ROMÁNTICO --- */
+.title-wrapper {
+  position: absolute;
+  top: 5%;
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  opacity: 0;
+  animation: fadeInTitle 2.5s ease 2s forwards, pulseTitle 4s ease-in-out infinite 4.5s;
+  pointer-events: none;
+  padding: 0 15px;
+}
+
+.title-wrapper h1 {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(3.2rem, 7.5vw, 5.2rem);
+  font-weight: 700;
+  color: #ffe066;
+  text-shadow: 0 0 18px rgba(255, 215, 0, 0.85), 0 0 35px rgba(247, 151, 30, 0.65);
+  margin-bottom: 2px;
+}
+
+.title-wrapper p {
+  color: #fff9db;
+  font-size: clamp(0.95rem, 2.5vw, 1.25rem);
+  letter-spacing: 2px;
+  font-weight: 300;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.title-wrapper .sub-romantic {
+  display: block;
+  margin-top: 6px;
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  color: #ffd875;
+  font-style: italic;
+  opacity: 0.85;
+  letter-spacing: 1.5px;
+}
+
+@keyframes pulseTitle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.025);
+    opacity: 0.93;
+  }
+}
+
+@keyframes fadeInTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- BOTÓN DE AUDIO / MÚSICA --- */
+.mute-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 120;
+  background: rgba(10, 15, 26, 0.45);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffe066;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.mute-btn:hover {
+  background: rgba(255, 215, 0, 0.25);
+  transform: scale(1.1);
+}
+
+/* --- BOTÓN FLOTANTE DE LA CARTA (SOLO ÍCONO - APARECE TRAS FLORECER) --- */
+.letter-btn {
+  position: fixed;
+  bottom: 22px;
+  z-index: 110;
+  background: rgba(10, 15, 26, 0.65);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 215, 0, 0.5);
+  color: #ffe066;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.35);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
+  animation: fadeInLetterBtn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 6s forwards, pulseBtn 3s infinite ease-in-out 7.2s;
+}
+
+.letter-btn:hover {
+  background: rgba(255, 215, 0, 0.25);
+  transform: scale(1.15) rotate(6deg) !important;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.65);
+}
+
+@keyframes fadeInLetterBtn {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) translateY(20px);
+    pointer-events: none;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+}
+
+@keyframes pulseBtn {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.25);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    transform: scale(1.08);
+  }
+}
+
+/* --- MODAL DE LA CARTA ROMÁNTICA --- */
+.letter-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 14, 0.78);
+  backdrop-filter: blur(10px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 16px;
+}
+
+.letter-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.letter-card {
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, #1e2838 0%, #0d1420 55%, #070a10 100%);
+  border: 1.5px solid rgba(255, 215, 0, 0.55);
+  border-radius: 22px;
+  padding: 30px 24px 24px;
+  max-width: 440px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  text-align: center;
+  color: #fff9db;
+  box-shadow: 
+    0 0 50px rgba(255, 215, 0, 0.35), 
+    0 20px 40px rgba(0, 0, 0, 0.8),
+    inset 0 0 25px rgba(255, 215, 0, 0.08);
+  transform: scale(0.85) translateY(30px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 215, 0, 0.4) transparent;
+}
+
+.letter-card::-webkit-scrollbar {
+  width: 5px;
+}
+
+.letter-card::-webkit-scrollbar-thumb {
+  background: rgba(255, 215, 0, 0.4);
+  border-radius: 10px;
+}
+
+.letter-modal.active .letter-card {
+  transform: scale(1) translateY(0);
+}
+
+.letter-ornament {
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  color: #ffd875;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.letter-title {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(2.6rem, 6.5vw, 3.4rem);
+  font-weight: 700;
+  color: #ffe066;
+  margin: 6px 0 2px;
+  text-shadow: 0 0 16px rgba(255, 215, 0, 0.8), 0 0 30px rgba(247, 151, 30, 0.5);
+  line-height: 1.2;
+}
+
+.letter-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 16px;
+  color: #ffd54f;
+  font-size: 1.1rem;
+}
+
+.letter-divider::before,
+.letter-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.5), transparent);
+  margin: 0 10px;
+}
+
+.letter-body {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  font-weight: 300;
+  color: #f7f1d0;
+  text-align: left;
+}
+
+.letter-body p {
+  margin-bottom: 14px;
+}
+
+.letter-intro {
+  font-size: 1rem;
+  font-style: italic;
+  color: #ffe57f;
+  text-align: center;
+}
+
+.letter-highlight {
+  background: rgba(255, 215, 0, 0.08);
+  border-left: 3px solid #ffd200;
+  padding: 10px 14px;
+  border-radius: 0 10px 10px 0;
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  color: #fff4a3;
+  margin: 16px 0;
+  box-shadow: inset 0 0 12px rgba(255, 215, 0, 0.05);
+}
+
+.letter-signature {
+  text-align: right;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: #ffd875;
+  margin-top: 18px !important;
+  line-height: 1.5;
+}
+
+.letter-signature strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 1.1rem;
+  font-family: 'Dancing Script', cursive;
+  color: #ffe066;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* Botón de cierre elegante (X) en la esquina superior */
+.close-letter-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  color: #ffe066;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  z-index: 10;
+}
+
+.close-letter-btn:hover {
+  background: rgba(255, 215, 0, 0.35);
+  transform: scale(1.15) rotate(90deg);
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.6);
+  color: #ffffff;
+}
+
+/* --- CORAZONES FLOTANTES AL HACER CLIC / TOUCH --- */
+.click-heart {
+  position: fixed;
+  font-size: 1.4rem;
+  pointer-events: none;
+  z-index: 250;
+  animation: heartFly 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+@keyframes heartFly {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--hx)), calc(-50% - 75px)) scale(1.3);
+    opacity: 0;
+  }
+}
+
+/* ====================================================
+   ESTRUCTURA DEL RAMO DE FLORES
+   ==================================================== */
+.flowers {
+  position: relative;
+  transform: scale(0.94);
+  margin-bottom: 3vmin;
+}
+
+.flowers::before {
+  content: "";
+  position: absolute;
+  bottom: -10vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vmin;
+  height: 40vmin;
+  background: radial-gradient(ellipse at center, rgba(255, 210, 0, 0.22) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.flower {
+  position: absolute;
+  bottom: 10vmin;
+  transform-origin: bottom center;
+  z-index: 10;
+  will-change: transform;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+}
+
+/* --- POSICIONAMIENTO Y ANIMACIONES POR FLOR (1-20) --- */
+.flower--1 { animation: moving-flower-1 4s linear infinite; }
+.flower--1 .flower__line { height: 72vmin; animation-delay: 0.2s; }
+
+.flower--2 { left: 50%; transform: rotate(20deg); animation: moving-flower-2 4s linear infinite; }
+.flower--2 .flower__line { height: 60vmin; animation-delay: 0.5s; }
+
+.flower--3 { left: 50%; transform: rotate(-18deg); animation: moving-flower-3 4s linear infinite; }
+.flower--3 .flower__line { height: 58vmin; animation-delay: 0.8s; }
+
+.flower--4 { left: 50%; transform: rotate(36deg) scale(0.85); animation: moving-flower-2 4.5s linear infinite; z-index: 8; }
+.flower--4 .flower__line { height: 52vmin; animation-delay: 1.1s; }
+
+.flower--5 { left: 50%; transform: rotate(-35deg) scale(0.85); animation: moving-flower-3 4.5s linear infinite; z-index: 8; }
+.flower--5 .flower__line { height: 50vmin; animation-delay: 1.3s; }
+
+.flower--6 { left: 50%; transform: rotate(3deg) scale(0.75); animation: moving-flower-1 3.8s linear infinite; z-index: 12; }
+.flower--6 .flower__line { height: 44vmin; animation-delay: 1.6s; }
+
+.flower--7 { left: 50%; transform: translateX(-50%) rotate(52deg) scale(0.68); animation: moving-flower-4 5s linear infinite; z-index: 6; }
+.flower--7 .flower__line { height: 47vmin; animation-delay: 1.8s; }
+
+.flower--8 { left: 50%; transform: translateX(-50%) rotate(-50deg) scale(0.68); animation: moving-flower-5 5s linear infinite; z-index: 6; }
+.flower--8 .flower__line { height: 45vmin; animation-delay: 2s; }
+
+.flower--9 { left: 50%; transform: translateX(-50%) rotate(67deg) scale(0.55); animation: moving-flower-4 5.4s linear infinite; z-index: 5; }
+.flower--9 .flower__line { height: 39vmin; animation-delay: 2.2s; }
+
+.flower--10 { left: 50%; transform: translateX(-50%) rotate(-66deg) scale(0.55); animation: moving-flower-5 5.4s linear infinite; z-index: 5; }
+.flower--10 .flower__line { height: 37vmin; animation-delay: 2.4s; }
+
+.flower--11 { left: 50%; transform: translateX(-50%) rotate(10deg) scale(0.48); animation: moving-flower-1 4.2s linear infinite; z-index: 14; }
+.flower--11 .flower__line { height: 34vmin; animation-delay: 2.6s; }
+
+.flower--12 { left: 50%; transform: translateX(-50%) rotate(-10deg) scale(0.48); animation: moving-flower-1 4.4s linear infinite; z-index: 14; }
+.flower--12 .flower__line { height: 32vmin; animation-delay: 2.8s; }
+
+.flower--13 { left: 50%; transform: translateX(-50%) rotate(-42deg) scale(0.9); animation: moving-flower-3 4.2s linear infinite; z-index: 7; }
+.flower--13 .flower__line { height: 56vmin; animation-delay: 3.0s; }
+
+.flower--14 { left: 50%; transform: translateX(-50%) rotate(44deg) scale(0.88); animation: moving-flower-2 4.3s linear infinite; z-index: 7; }
+.flower--14 .flower__line { height: 54vmin; animation-delay: 3.2s; }
+
+.flower--15 { left: 50%; transform: translateX(-50%) rotate(-68deg) scale(0.6); animation: moving-flower-5 5.2s linear infinite; z-index: 3; }
+.flower--15 .flower__line { height: 42vmin; animation-delay: 3.4s; }
+
+.flower--16 { left: 50%; transform: translateX(-50%) rotate(70deg) scale(0.6); animation: moving-flower-4 5.3s linear infinite; z-index: 3; }
+.flower--16 .flower__line { height: 40vmin; animation-delay: 3.6s; }
+
+.flower--17 { left: 50%; transform: translateX(-50%) rotate(-12deg) scale(0.55); animation: moving-flower-1 4.0s linear infinite; z-index: 13; }
+.flower--17 .flower__line { height: 36vmin; animation-delay: 3.8s; }
+
+.flower--18 { left: 50%; transform: translateX(-50%) rotate(14deg) scale(0.55); animation: moving-flower-1 4.1s linear infinite; z-index: 13; }
+.flower--18 .flower__line { height: 35vmin; animation-delay: 4.0s; }
+
+.flower--19 { left: 50%; transform: translateX(-50%) rotate(-3deg) scale(0.45); animation: moving-flower-1 3.6s linear infinite; z-index: 16; }
+.flower--19 .flower__line { height: 28vmin; animation-delay: 4.2s; }
+
+.flower--20 { left: 50%; transform: translateX(-50%) rotate(5deg) scale(0.45); animation: moving-flower-1 3.7s linear infinite; z-index: 16; }
+.flower--20 .flower__line { height: 27vmin; animation-delay: 4.4s; }
+
+/* --- APERTURA Y RETRASOS DE PÉTALOS --- */
+.flower__leafs {
+  position: relative;
+  animation: blooming-flower 2s backwards;
+}
+
+.flower--1 .flower__leafs { animation-delay: 1.0s; }
+.flower--2 .flower__leafs { animation-delay: 1.3s; }
+.flower--3 .flower__leafs { animation-delay: 1.6s; }
+.flower--4 .flower__leafs { animation-delay: 1.9s; }
+.flower--5 .flower__leafs { animation-delay: 2.1s; }
+.flower--6 .flower__leafs { animation-delay: 2.4s; }
+.flower--7 .flower__leafs { animation-delay: 2.6s; }
+.flower--8 .flower__leafs { animation-delay: 2.8s; }
+.flower--9 .flower__leafs { animation-delay: 3.0s; }
+.flower--10 .flower__leafs { animation-delay: 3.2s; }
+.flower--11 .flower__leafs { animation-delay: 3.4s; }
+.flower--12 .flower__leafs { animation-delay: 3.6s; }
+.flower--13 .flower__leafs { animation-delay: 3.8s; }
+.flower--14 .flower__leafs { animation-delay: 4.0s; }
+.flower--15 .flower__leafs { animation-delay: 4.2s; }
+.flower--16 .flower__leafs { animation-delay: 4.4s; }
+.flower--17 .flower__leafs { animation-delay: 4.6s; }
+.flower--18 .flower__leafs { animation-delay: 4.8s; }
+.flower--19 .flower__leafs { animation-delay: 5.0s; }
+.flower--20 .flower__leafs { animation-delay: 5.2s; }
+
+/* --- DETALLES DE PÉTALOS AMARILLOS --- */
+.flower__leaf {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 8vmin;
+  height: 11vmin;
+  border-radius: 51% 49% 47% 53% / 44% 45% 55% 56%;
+  background-image: linear-gradient(to top, var(--yellow-deep), var(--yellow-main), var(--yellow-light));
+  transform-origin: bottom center;
+  opacity: 0.95;
+  box-shadow: inset 0 0 2vmin rgba(255, 255, 255, 0.45), 0 0 1.6vmin rgba(255, 210, 0, 0.65);
+}
+
+.flower__leaf--1 { transform: translate(-10%, 1%) rotateY(40deg) rotateX(-50deg); }
+.flower__leaf--2 { transform: translate(-50%, -4%) rotateX(40deg); }
+.flower__leaf--3 { transform: translate(-90%, 0%) rotateY(45deg) rotateX(50deg); }
+.flower__leaf--4 {
+  width: 8vmin;
+  height: 8vmin;
+  transform-origin: bottom left;
+  border-radius: 4vmin 10vmin 4vmin 4vmin;
+  transform: translate(0%, 18%) rotateX(70deg) rotate(-43deg);
+  background-image: linear-gradient(to top, #e65100, var(--yellow-main));
+  z-index: 1;
+  opacity: 0.88;
+}
+
+.flower__white-circle {
+  position: absolute;
+  left: -3.5vmin;
+  top: -3vmin;
+  width: 9vmin;
+  height: 4vmin;
+  border-radius: 50%;
+  background-color: #ffe57f;
+  filter: blur(0.2vmin);
+}
+
+/* --- PUNTOS LUMINOSOS EN FLORES --- */
+.flower__light {
+  position: absolute;
+  bottom: 0vmin;
+  width: 1.1vmin;
+  height: 1.1vmin;
+  background-color: rgb(255, 253, 214);
+  border-radius: 50%;
+  filter: blur(0.2vmin);
+  animation: light-ans 4s linear infinite backwards;
+}
+
+.flower__light--1 { left: -2vmin; transform: translateY(-1vmin); }
+.flower__light--2 { left: 3vmin; transform: translateY(-2vmin); animation-delay: 1s; }
+.flower__light--3 { left: -1vmin; transform: translateY(-4vmin); animation-delay: 0.5s; }
+.flower__light--4 { left: 2vmin; transform: translateY(-5vmin); animation-delay: 1.5s; }
+
+/* --- TALLOS Y HOJAS --- */
+.flower__line {
+  height: 55vmin;
+  width: 1.5vmin;
+  background-image: 
+    linear-gradient(to left, rgba(0, 0, 0, 0.2), transparent, rgba(255, 255, 255, 0.2)), 
+    linear-gradient(to top, transparent 10%, var(--stem-color), #2d7747);
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.5);
+  animation: grow-flower-tree 4s backwards;
+}
+
+.flower__line__leaf {
+  --w: 7vmin;
+  --h: calc(var(--w) + 2vmin);
+  position: absolute;
+  top: 20%;
+  left: 90%;
+  width: var(--w);
+  height: var(--h);
+  border-top-right-radius: var(--h);
+  border-bottom-left-radius: var(--h);
+  background-image: linear-gradient(to top, rgba(20, 68, 42, 0.5), #2d7747, #52b788);
+}
+
+.flower__line__leaf--1 { transform: rotate(70deg) rotateY(30deg); }
+.flower__line__leaf--2 { top: 45%; transform: rotate(70deg) rotateY(30deg); }
+
+.flower__line__leaf--3,
+.flower__line__leaf--4,
+.flower__line__leaf--6 {
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: var(--h);
+  border-bottom-right-radius: var(--h);
+  left: -460%;
+  top: 12%;
+  transform: rotate(-70deg) rotateY(30deg);
+}
+
+.flower__line__leaf--4 { top: 40%; }
+.flower__line__leaf--5 { top: 0; transform-origin: left; transform: rotate(70deg) rotateY(30deg) scale(0.6); }
+.flower__line__leaf--6 { top: -2%; left: -450%; transform-origin: right; transform: rotate(-70deg) rotateY(30deg) scale(0.6); }
+
+/* --- CÉSPED Y FOLLAJE BASE --- */
+.flower__grass {
+  --c: var(--grass-color);
+  --line-w: 1.5vmin;
+  position: absolute;
+  bottom: 12vmin;
+  left: -7vmin;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  z-index: 20;
+  transform-origin: bottom center;
+  transform: rotate(-48deg) rotateY(40deg);
+}
+
+.flower__grass--2 { left: 2vmin; bottom: 10vmin; transform: scale(1.2) rotate(75deg) rotateX(10deg) rotateY(-200deg); opacity: 0.85; z-index: 0; }
+.flower__grass--3 { left: -12vmin; bottom: 11vmin; transform: scale(0.9) rotate(-65deg) rotateY(30deg); opacity: 0.75; z-index: 2; }
+.flower__grass--4 { left: 10vmin; bottom: 9vmin; transform: scale(0.9) rotate(58deg); opacity: .8; z-index: 1; }
+.flower__grass--5 { left: -16vmin; bottom: 8vmin; transform: scale(.75) rotate(-58deg); opacity: .8; z-index: 1; }
+.flower__grass--6 { left: 18vmin; bottom: 7vmin; transform: scale(.65) rotate(42deg); opacity: .7; z-index: 1; }
+.flower__grass--7 { left: -21vmin; bottom: 7vmin; transform: scale(.65) rotate(-42deg); opacity: .7; z-index: 1; }
+
+.flower__grass--top {
+  width: 7vmin;
+  height: 10vmin;
+  border-top-right-radius: 100%;
+  border-right: var(--line-w) solid var(--c);
+  transform-origin: bottom center;
+  transform: rotate(-2deg);
+}
+
+.flower__grass--bottom {
+  margin-top: -2px;
+  width: var(--line-w);
+  height: 25vmin;
+  background-image: linear-gradient(to top, transparent, var(--c));
+}
+
+.grow-ans {
+  animation: grow-ans 2s var(--d) backwards;
+}
+
+/* ====================================================
+   🦋 MARIPOSAS MULTICOLORES Y DESTELLOS
+   ==================================================== */
+.butterflies { 
+  position: fixed; 
+  inset: 0; 
+  z-index: 60; 
+  pointer-events: none; 
+  overflow: hidden; 
+  opacity: 0; 
+  animation: fadeInButterflies 2.5s ease-out 6s forwards; 
+}
+
+@keyframes fadeInButterflies {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.butterfly { 
+  position: absolute; 
+  width: 5.2vmin; 
+  height: 4.2vmin; 
+  filter: drop-shadow(0 0 8px var(--glow-color, rgba(255, 220, 80, .7))); 
+  animation: butterflyFloat var(--duration) ease-in-out infinite; 
+  animation-delay: var(--delay); 
+  transform-origin: center; 
+  will-change: transform;
+}
+
+.butterfly::before, 
+.butterfly::after { 
+  content: ""; 
+  position: absolute; 
+  top: 0; 
+  width: 50%; 
+  height: 100%; 
+  border-radius: 75% 25% 70% 30%; 
+  background: radial-gradient(circle at 55% 42%, #ffffff 0 9%, transparent 10%), 
+              linear-gradient(145deg, var(--c1, #fff176), var(--c2, #ffca28) 58%, var(--c3, #f57c00)); 
+  box-shadow: inset 0 0 1.2vmin rgba(255, 255, 255, .75); 
+}
+
+.butterfly::before { 
+  left: 0; 
+  transform-origin: right bottom; 
+  transform: rotate(-22deg); 
+  animation: wingLeft .42s ease-in-out infinite alternate; 
+}
+
+.butterfly::after { 
+  right: 0; 
+  transform-origin: left bottom; 
+  transform: scaleX(-1) rotate(-22deg); 
+  animation: wingRight .42s ease-in-out infinite alternate; 
+}
+
+.butterfly .body { 
+  position: absolute; 
+  z-index: 3; 
+  left: 50%; 
+  top: 13%; 
+  width: .65vmin; 
+  height: 75%; 
+  transform: translateX(-50%); 
+  border-radius: 50%; 
+  background: linear-gradient(#2b182e, #0a060e); 
+  box-shadow: 0 0 3px rgba(255, 255, 255, .4); 
+}
+
+.butterfly .antenna { 
+  position: absolute; 
+  z-index: 4; 
+  left: 50%; 
+  top: 4%; 
+  width: 2.2vmin; 
+  height: 1.5vmin; 
+  border-top: .18vmin solid #ffffffbb; 
+  border-radius: 50%; 
+  transform: translateX(-50%); 
+}
+
+.butterfly .antenna::after { 
+  content: ""; 
+  position: absolute; 
+  width: .45vmin; 
+  height: .45vmin; 
+  border-radius: 50%; 
+  background: var(--c1, #fff); 
+  left: 50%; 
+  top: -.35vmin; 
+  box-shadow: -1.6vmin .15vmin 0 var(--c1, #fff); 
+}
+
+/* Colores y trayectorias individuales */
+.butterfly--1 { left: 8%; top: 26%; --duration: 8s; --delay: 0s; --c1: #80d8ff; --c2: #0091ea; --c3: #0d47a1; --glow-color: rgba(0, 170, 255, 0.85); }
+.butterfly--2 { left: 78%; top: 22%; width: 4.2vmin; --duration: 9s; --delay: 1.5s; --c1: #ff80ab; --c2: #f50057; --c3: #880e4f; --glow-color: rgba(255, 0, 115, 0.85); }
+.butterfly--3 { left: 15%; top: 58%; width: 4.5vmin; --duration: 10s; --delay: 2s; --c1: #ea80fc; --c2: #aa00ff; --c3: #4a148c; --glow-color: rgba(187, 44, 253, 0.85); }
+.butterfly--4 { left: 83%; top: 55%; width: 5.5vmin; --duration: 8.5s; --delay: 3s; --c1: #a7ffeb; --c2: #00bfa5; --c3: #004d40; --glow-color: rgba(0, 242, 198, 0.85); }
+.butterfly--5 { left: 28%; top: 18%; width: 3.7vmin; --duration: 11s; --delay: 4s; --c1: #ffe082; --c2: #ff9100; --c3: #dd2c00; --glow-color: rgba(255, 123, 0, 0.85); }
+.butterfly--6 { left: 69%; top: 67%; width: 4vmin; --duration: 9.5s; --delay: 1s; --c1: #b9f6ca; --c2: #00e676; --c3: #1b5e20; --glow-color: rgba(0, 230, 118, 0.85); }
+.butterfly--7 { left: 5%; top: 72%; width: 3.6vmin; --duration: 12s; --delay: 5s; --c1: #ffcdd2; --c2: #ff5252; --c3: #b71c1c; --glow-color: rgba(255, 82, 82, 0.85); }
+.butterfly--8 { left: 90%; top: 38%; width: 3.8vmin; --duration: 10.5s; --delay: 2.5s; --c1: #ffff8d; --c2: #ffd600; --c3: #ff6d00; --glow-color: rgba(255, 214, 0, 0.85); }
+
+@keyframes wingLeft {
+  from { transform: rotate(-22deg) scaleY(1); }
+  to { transform: rotate(-48deg) scaleY(.78); }
+}
+
+@keyframes wingRight {
+  from { transform: scaleX(-1) rotate(-22deg) scaleY(1); }
+  to { transform: scaleX(-1) rotate(-48deg) scaleY(.78); }
+}
+
+@keyframes butterflyFloat {
+  0%, 100% { transform: translate(0, 0) rotate(-5deg); }
+  25% { transform: translate(4vw, -7vh) rotate(9deg); }
+  50% { transform: translate(-3vw, -13vh) rotate(-7deg); }
+  75% { transform: translate(6vw, -5vh) rotate(6deg); }
+}
+
+/* Partículas mágicas de las mariposas */
+.butterfly-sparkle { 
+  position: absolute; 
+  width: .9vmin; 
+  height: .9vmin; 
+  border-radius: 50%; 
+  background: var(--sparkle-color, #fff7a8); 
+  box-shadow: 0 0 1.8vmin var(--sparkle-glow, #ffd54f); 
+  animation: sparkleFloat 3s ease-in-out infinite; 
+  opacity: .85; 
+}
+
+.sparkle--1 { left: 12%; top: 33%; animation-delay: .4s; --sparkle-color: #80d8ff; --sparkle-glow: #0091ea; }
+.sparkle--2 { left: 86%; top: 28%; animation-delay: 1.2s; --sparkle-color: #ff80ab; --sparkle-glow: #f50057; }
+.sparkle--3 { left: 19%; top: 63%; animation-delay: 2s; --sparkle-color: #ea80fc; --sparkle-glow: #aa00ff; }
+.sparkle--4 { left: 76%; top: 60%; animation-delay: .8s; --sparkle-color: #a7ffeb; --sparkle-glow: #00bfa5; }
+.sparkle--5 { left: 88%; top: 70%; animation-delay: 1.7s; --sparkle-color: #b9f6ca; --sparkle-glow: #00e676; }
+
+@keyframes sparkleFloat {
+  0%, 100% { transform: scale(.5) translateY(0); opacity: .3; }
+  50% { transform: scale(1.5) translateY(-2vmin); opacity: 1; }
+}
+
+/* ====================================================
+   ANIMACIONES GENERALES DEL RAMO
+   ==================================================== */
+@keyframes grow-ans {
+  0% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes grow-flower-tree {
+  0% { height: 0; border-radius: 1vmin; }
+}
+
+@keyframes blooming-flower {
+  0% { transform: scale(0); }
+}
+
+@keyframes moving-flower-1 {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg); }
+}
+
+@keyframes moving-flower-2 {
+  0%, 100% { transform: rotate(20deg); }
+  50% { transform: rotate(16deg); }
+}
+
+@keyframes moving-flower-3 {
+  0%, 100% { transform: rotate(-18deg); }
+  50% { transform: rotate(-22deg); }
+}
+
+@keyframes moving-flower-4 {
+  0%, 100% { transform: translateX(-50%) rotate(52deg) scale(0.68); }
+  50% { transform: translateX(-50%) rotate(47deg) scale(0.68); }
+}
+
+@keyframes moving-flower-5 {
+  0%, 100% { transform: translateX(-50%) rotate(-50deg) scale(0.68); }
+  50% { transform: translateX(-50%) rotate(-45deg) scale(0.68); }
+}
+
+@keyframes light-ans {
+  0% {
+    opacity: 0;
+    transform: translateY(0vmin);
+  }
+  25% {
+    opacity: 1;
+    transform: translateY(-5vmin) translateX(-2vmin);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15vmin) translateX(2vmin);
+    filter: blur(0.2vmin);
+  }
+  75% {
+    transform: translateY(-20vmin) translateX(-2vmin);
+    filter: blur(0.2vmin);
+  }
+  100% {
+    transform: translateY(-30vmin);
+    opacity: 0;
+    filter: blur(1vmin);
+  }
+}
