@@ -208,17 +208,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const muteIcon = document.getElementById('muteIcon');
   let hasStarted = false;
   let userPaused = false;
+  let audioCtx = null;
+
+  // Desbloqueador de audio para Android / iOS
+  function unlockMobileAudio() {
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    } catch (e) {
+      console.log('AudioContext init:', e);
+    }
+  }
 
   function startExperience() {
     if (hasStarted) return;
     hasStarted = true;
 
+    // Desbloquear motor de audio móvil
+    unlockMobileAudio();
+
     // 1. Iniciar la música exactamente al salir las flores
     if (bgMusic) {
       bgMusic.volume = 0.9;
-      bgMusic.play().then(() => {
-        if (muteIcon) muteIcon.innerText = '🔊';
-      }).catch((e) => console.log('Audio error:', e));
+      
+      const playPromise = bgMusic.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            if (muteIcon) muteIcon.innerText = '🔊';
+          })
+          .catch((err) => {
+            console.log('Audio play primary error:', err);
+            // Fallback si el archivo principal no decodificó en Android
+            bgMusic.src = 'audio/sonido.mpeg';
+            bgMusic.load();
+            bgMusic.play()
+              .then(() => { if (muteIcon) muteIcon.innerText = '🔊'; })
+              .catch((e) => console.log('Audio fallback error:', e));
+          });
+      }
     }
 
     // 2. Activar las flores y animaciones en este instante exacto
@@ -236,17 +268,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Activar al hacer clic en el botón o tocar la pantalla de bienvenida
+  // Activar en el primer gesto táctil en Android e iOS (pointerdown, touchstart o click)
   if (startBtn) {
-    startBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      startExperience();
-    });
+    startBtn.addEventListener('pointerdown', startExperience, { passive: true });
+    startBtn.addEventListener('touchstart', startExperience, { passive: true });
+    startBtn.addEventListener('click', startExperience);
   }
 
   if (introScreen) {
-    introScreen.addEventListener('click', startExperience);
+    introScreen.addEventListener('pointerdown', startExperience, { passive: true });
     introScreen.addEventListener('touchstart', startExperience, { passive: true });
+    introScreen.addEventListener('click', startExperience);
   }
 
   // También iniciar con tecla Enter o Espacio
@@ -263,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (bgMusic.paused) {
         userPaused = false;
+        unlockMobileAudio();
         bgMusic.play().then(() => {
           if (muteIcon) muteIcon.innerText = '🔊';
         });
