@@ -1008,28 +1008,61 @@ canvas#star-canvas {
    ADAPTABILIDAD RESPONSIVA PARA TODOS LOS DISPOSITIVOS
    ==================================================== */
 
-/* --- Celulares y Pantallas Pequeñas (≤ 480px) --- */
-@media (max-width: 480px) {
+/* --- Celulares y Smartphones Verticales (≤ 600px) --- */
+@media (max-width: 600px) {
   .flowers {
-    transform: scale(0.72);
-    margin-bottom: max(1.5vmin, env(safe-area-inset-bottom, 8px));
+    transform: scale(1.35);
+    margin-bottom: clamp(6vh, 10vh, 14vh);
+    transform-origin: bottom center;
   }
 
   .title-wrapper {
-    top: max(2.5%, env(safe-area-inset-top, 10px));
+    top: max(4%, env(safe-area-inset-top, 16px));
+    padding: 0 52px 0 16px; /* Espacio derecho para no chocar con el botón de audio */
   }
 
   .title-wrapper h1 {
-    font-size: clamp(2.3rem, 10vw, 3.4rem);
+    font-size: clamp(2.6rem, 11vw, 3.6rem);
+    line-height: 1.12;
+    margin-bottom: 4px;
   }
 
   .title-wrapper p {
-    font-size: clamp(0.85rem, 3.8vw, 1.05rem);
+    font-size: clamp(0.9rem, 3.8vw, 1.1rem);
     letter-spacing: 1px;
   }
 
+  .title-wrapper .sub-romantic {
+    margin-top: 4px;
+    font-size: clamp(0.78rem, 3.2vw, 0.92rem);
+  }
+
+  /* Botón de la carta en la esquina inferior derecha para no tapar el ramo */
+  .letter-btn {
+    bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    right: max(18px, env(safe-area-inset-right, 18px));
+    left: auto;
+    transform: scale(0.6);
+    animation: fadeInLetterBtnMobile 1.2s cubic-bezier(0.16, 1, 0.3, 1) 6s forwards, pulseBtnMobile 3s infinite ease-in-out 7.2s;
+  }
+
+  .letter-btn:hover {
+    transform: scale(1.15) rotate(6deg) !important;
+  }
+
+  /* Mariposas distribuidas armónicamente alrededor del ramo */
+  .butterfly--1 { left: 8%; top: 26%; }
+  .butterfly--2 { left: 78%; top: 24%; }
+  .butterfly--3 { left: 8%; top: 48%; }
+  .butterfly--4 { left: 82%; top: 46%; }
+  .butterfly--5 { left: 20%; top: 18%; }
+  .butterfly--6 { left: 76%; top: 56%; }
+  .butterfly--7 { left: 6%; top: 64%; }
+  .butterfly--8 { left: 85%; top: 34%; }
+
   .intro-card {
     padding: 24px 18px 20px;
+    max-width: min(340px, 88vw);
   }
 
   .intro-snoopy-img {
@@ -1038,33 +1071,76 @@ canvas#star-canvas {
   }
 
   .letter-card {
-    padding: 22px 16px 18px;
+    padding: 22px 18px 20px;
     border-radius: 18px;
+    max-width: 90vw;
   }
 
   .letter-title {
-    font-size: 2.3rem;
+    font-size: 2.4rem;
   }
 
   .letter-body {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     line-height: 1.6;
   }
 }
 
-/* --- Pantallas de Altura Reducida (≤ 680px) --- */
-@media (max-height: 680px) {
+@keyframes fadeInLetterBtnMobile {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) translateY(20px);
+    pointer-events: none;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+}
+
+@keyframes pulseBtnMobile {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    transform: scale(1.08);
+  }
+}
+
+/* --- Tablets y Pantallas Medianas (601px a 1024px) --- */
+@media (min-width: 601px) and (max-width: 1024px) {
   .flowers {
-    transform: scale(0.62);
+    transform: scale(1.15);
+    margin-bottom: clamp(6vh, 9vh, 12vh);
+  }
+
+  .title-wrapper {
+    top: max(4%, env(safe-area-inset-top, 20px));
+    padding: 0 60px 0 20px;
+  }
+
+  .title-wrapper h1 {
+    font-size: clamp(3.2rem, 8vw, 4.4rem);
+  }
+}
+
+/* --- Pantallas de Altura Reducida o Modo Horizontal (≤ 620px de alto) --- */
+@media (max-height: 620px) {
+  .flowers {
+    transform: scale(0.68);
     margin-bottom: 0;
   }
 
   .title-wrapper {
     top: 2%;
+    padding: 0 50px 0 16px;
   }
 
   .title-wrapper h1 {
-    font-size: clamp(2rem, 6vw, 3rem);
+    font-size: clamp(2rem, 5.5vw, 2.8rem);
     margin-bottom: 0;
   }
 
@@ -1079,72 +1155,64 @@ canvas#star-canvas {
 
   .intro-card {
     padding: 18px 16px;
+    max-width: 360px;
   }
 
   .intro-snoopy-img {
-    width: 95px;
-    height: 95px;
+    width: 90px;
+    height: 90px;
   }
 
   .letter-card {
     max-height: 92vh;
     max-height: 92dvh;
-    padding: 18px 16px;
+    padding: 16px 18px;
   }
 }
 
-/* --- Modo Horizontal en Celulares (Landscape ≤ 520px de alto) --- */
-@media (max-height: 520px) and (orientation: landscape) {
+/* --- Modo Horizontal en Celulares (Landscape ≤ 500px de alto) --- */
+@media (max-height: 500px) and (orientation: landscape) {
   .flowers {
-    transform: scale(0.48);
-    margin-bottom: -4vmin;
+    transform: scale(0.52);
+    margin-bottom: -3vmin;
   }
 
   .title-wrapper {
-    top: 1.5%;
+    top: 1%;
   }
 
   .title-wrapper h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
   }
 
   .title-wrapper p,
   .title-wrapper .sub-romantic {
-    display: none; /* Simplificar para dar espacio limpio al ramo */
+    display: none;
   }
 
   .intro-card {
-    padding: 14px 20px;
+    padding: 12px 18px;
     display: flex;
     align-items: center;
     gap: 16px;
-    max-width: 480px;
+    max-width: 460px;
   }
 
   .intro-snoopy-img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .letter-card {
-    max-height: 94vh;
-    padding: 16px 20px;
-  }
-
-  .letter-body p {
-    margin-bottom: 8px;
+    width: 75px;
+    height: 75px;
   }
 }
 
-/* --- Pantallas Grandes y Monitores de Alta Resolución (≥ 1400px) --- */
+/* --- Pantallas Grandes y Monitores (≥ 1400px) --- */
 @media (min-width: 1400px) {
   .flowers {
-    transform: scale(1.05);
-    margin-bottom: 3.5vmin;
+    transform: scale(1.1);
+    margin-bottom: 5vh;
   }
 
   .title-wrapper h1 {
-    font-size: 5rem;
+    font-size: 5.2rem;
   }
 
   .letter-card {
