@@ -538,10 +538,9 @@ canvas#star-canvas {
    ==================================================== */
 .flowers {
   position: relative;
-  transform: scale(clamp(0.95, 1.2vw + 0.8, 1.15));
-  margin-bottom: clamp(6vh, 10vh, 14vh);
+  transform: scale(clamp(0.65, 0.8vw + 0.55, 0.95));
+  margin-bottom: max(2vmin, env(safe-area-inset-bottom, 10px));
   transform-origin: bottom center;
-  will-change: transform;
   transition: transform 0.4s ease;
 }
 
@@ -1009,50 +1008,24 @@ canvas#star-canvas {
    ADAPTABILIDAD RESPONSIVA PARA TODOS LOS DISPOSITIVOS
    ==================================================== */
 
-/* --- Celulares y Smartphones Verticales (≤ 600px) --- */
-@media (max-width: 600px) {
+/* --- Celulares y Pantallas Pequeñas (≤ 480px) --- */
+@media (max-width: 480px) {
   .flowers {
-    transform: scale(1.35);
-    margin-bottom: clamp(7vh, 11vh, 15vh);
+    transform: scale(0.72);
+    margin-bottom: max(1.5vmin, env(safe-area-inset-bottom, 8px));
   }
 
   .title-wrapper {
-    top: max(4.5%, env(safe-area-inset-top, 20px));
-    padding: 0 16px;
+    top: max(2.5%, env(safe-area-inset-top, 10px));
   }
 
   .title-wrapper h1 {
-    font-size: clamp(2.8rem, 11.5vw, 3.8rem);
-    margin-bottom: 4px;
+    font-size: clamp(2.3rem, 10vw, 3.4rem);
   }
 
   .title-wrapper p {
-    font-size: clamp(0.95rem, 4.2vw, 1.15rem);
+    font-size: clamp(0.85rem, 3.8vw, 1.05rem);
     letter-spacing: 1px;
-  }
-
-  .title-wrapper .sub-romantic {
-    margin-top: 6px;
-    font-size: clamp(0.82rem, 3.5vw, 0.95rem);
-  }
-
-  /* Mariposas flotando en la zona media/alta */
-  .butterfly--1 { left: 8%; top: 24%; }
-  .butterfly--2 { left: 80%; top: 22%; }
-  .butterfly--3 { left: 8%; top: 46%; }
-  .butterfly--4 { left: 82%; top: 44%; }
-  .butterfly--5 { left: 22%; top: 18%; }
-  .butterfly--6 { left: 76%; top: 54%; }
-  .butterfly--7 { left: 6%; top: 62%; }
-  .butterfly--8 { left: 85%; top: 34%; }
-
-  /* Botón de la carta flotante en la esquina para no tapar el tallo */
-  .letter-btn {
-    bottom: max(22px, env(safe-area-inset-bottom, 22px));
-    right: max(20px, env(safe-area-inset-right, 20px));
-    left: auto;
-    transform: scale(0.6);
-    animation: fadeInLetterBtnMobile 1.2s cubic-bezier(0.16, 1, 0.3, 1) 6s forwards, pulseBtnMobile 3s infinite ease-in-out 7.2s;
   }
 
   .intro-card {
@@ -1060,12 +1033,12 @@ canvas#star-canvas {
   }
 
   .intro-snoopy-img {
-    width: 115px;
-    height: 115px;
+    width: 110px;
+    height: 110px;
   }
 
   .letter-card {
-    padding: 22px 18px 20px;
+    padding: 22px 16px 18px;
     border-radius: 18px;
   }
 
@@ -1074,55 +1047,15 @@ canvas#star-canvas {
   }
 
   .letter-body {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.6;
   }
 }
 
-@keyframes fadeInLetterBtnMobile {
-  0% {
-    opacity: 0;
-    transform: scale(0.4) translateY(20px);
-    pointer-events: none;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    pointer-events: auto;
-  }
-}
-
-@keyframes pulseBtnMobile {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
-    transform: scale(1.08);
-  }
-}
-
-/* --- Tablets y Pantallas Medianas (601px a 1024px) --- */
-@media (min-width: 601px) and (max-width: 1024px) {
+/* --- Pantallas de Altura Reducida (≤ 680px) --- */
+@media (max-height: 680px) {
   .flowers {
-    transform: scale(1.15);
-    margin-bottom: clamp(6vh, 9vh, 12vh);
-  }
-
-  .title-wrapper {
-    top: max(4%, env(safe-area-inset-top, 20px));
-  }
-
-  .title-wrapper h1 {
-    font-size: clamp(3.2rem, 8vw, 4.4rem);
-  }
-}
-
-/* --- Pantallas de Altura Reducida o Modo Horizontal (≤ 620px de alto) --- */
-@media (max-height: 620px) {
-  .flowers {
-    transform: scale(0.68);
+    transform: scale(0.62);
     margin-bottom: 0;
   }
 
@@ -1131,7 +1064,7 @@ canvas#star-canvas {
   }
 
   .title-wrapper h1 {
-    font-size: clamp(2rem, 5.5vw, 2.8rem);
+    font-size: clamp(2rem, 6vw, 3rem);
     margin-bottom: 0;
   }
 
@@ -1146,39 +1079,38 @@ canvas#star-canvas {
 
   .intro-card {
     padding: 18px 16px;
-    max-width: 360px;
   }
 
   .intro-snoopy-img {
-    width: 90px;
-    height: 90px;
+    width: 95px;
+    height: 95px;
   }
 
   .letter-card {
     max-height: 92vh;
     max-height: 92dvh;
-    padding: 16px 18px;
+    padding: 18px 16px;
   }
 }
 
-/* --- Modo Horizontal en Celulares (Landscape ≤ 500px de alto) --- */
-@media (max-height: 500px) and (orientation: landscape) {
+/* --- Modo Horizontal en Celulares (Landscape ≤ 520px de alto) --- */
+@media (max-height: 520px) and (orientation: landscape) {
   .flowers {
-    transform: scale(0.52);
-    margin-bottom: -3vmin;
+    transform: scale(0.48);
+    margin-bottom: -4vmin;
   }
 
   .title-wrapper {
-    top: 1%;
+    top: 1.5%;
   }
 
   .title-wrapper h1 {
-    font-size: 1.9rem;
+    font-size: 2rem;
   }
 
   .title-wrapper p,
   .title-wrapper .sub-romantic {
-    display: none;
+    display: none; /* Simplificar para dar espacio limpio al ramo */
   }
 
   .intro-card {
@@ -1190,20 +1122,29 @@ canvas#star-canvas {
   }
 
   .intro-snoopy-img {
-    width: 75px;
-    height: 75px;
+    width: 80px;
+    height: 80px;
+  }
+
+  .letter-card {
+    max-height: 94vh;
+    padding: 16px 20px;
+  }
+
+  .letter-body p {
+    margin-bottom: 8px;
   }
 }
 
-/* --- Pantallas Grandes y Monitores (≥ 1400px) --- */
+/* --- Pantallas Grandes y Monitores de Alta Resolución (≥ 1400px) --- */
 @media (min-width: 1400px) {
   .flowers {
-    transform: scale(1.1);
-    margin-bottom: 5vh;
+    transform: scale(1.05);
+    margin-bottom: 3.5vmin;
   }
 
   .title-wrapper h1 {
-    font-size: 5.2rem;
+    font-size: 5rem;
   }
 
   .letter-card {
